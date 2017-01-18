@@ -38,12 +38,23 @@ moves = ''
 # Da el lado "adyacente" usado en atan2 !*!
 trigoY = ladoc1
 Player = 1
-print "-Click y arrastre para mover el cubo.\n-Posicione el mouse sobre la cara que desea pintar\n \
-y presione tecla espaciadora para pintar de un color.\n-P1 es rojo, P2 es verde.\n\n \
-Demo no terminado. Presione tecla 't' para simluacion de movimiento 'top'\n(es decir, mover la cara superior\
- en el sentido del reloj"
+instrucciones1 = "- Click and drag to rotate the whole cube around.\n" \
+                 "- Hover your mouse over the cell you want to mark,\n" \
+                 "  then press the spacebar to do so. P1 is red, P2 is green.\n" \
+                 "- How to rotate individual faces \n" \
+                 "   f: Front face (the one that faces you when the cube is still)\n" \
+                 "   r: Right\n" \
+                 "   l: Left\n" \
+                 "   d: Down\n" \
+                 "   t: Top\n" \
+                 "   e: Equator (horizontal line)\n" \
+                 "   m: Middle (vertical line)\n" \
+                 "  Clockwise rotations by default.\n" \
+                 "  Right click while pressing the buttons to make it counterclockwise.\n" \
+                 "(unfinished demo)"
 tu1 = "Turno de jugador 1"
 tu2 = "Turno de jugador 2"
+print instrucciones1
 print tu1
 run = True
 while run:
@@ -54,7 +65,6 @@ while run:
     # ~ o2+=w2*dt
     keystate = pygame.key.get_pressed()
     clickstate = pygame.mouse.get_pressed()
-    # Giro horizontal:
     if clickstate[0]:
         if flog == 0:
             pos0 = mousePos(w, h)
@@ -69,7 +79,8 @@ while run:
     else:
         flog = 0
         roAngs = [0.0, 0.0, 0.0]
-    ind = mouseOverQ(zmK, ladoc1, w, h, offset)
+    # If the cube is not being moved, see if the mouse is over any of the front cells and if so, color that cell blue
+    ind = mouseOverQ(zmK, ladoc1, w, h, offset) if not flog else None
     ruk.setMultiColors(range(26), [egg] * 6, False)
     if ind != None:
         ruk.setSingleColors(ind, [blue] + [egg] * 5)
@@ -117,20 +128,22 @@ while run:
     else:
         ruk.draw(cExploreRot=True, cAngs=roAngs, cRot=[1, -1, 0])
         #ruk.draw(move=moves)
+        # Meaning: If right click is pressed, make it counter-clockwise
+        isClockwise = not clickstate[2]
         if moves == 't':
-            ruk.turnUp()
+            ruk.turnUp(isClockwise)
         elif moves == 'l':
-            ruk.turnLeft()
+            ruk.turnLeft(isClockwise)
         elif moves == 'r':
-            ruk.turnRight()
+            ruk.turnRight(isClockwise)
         elif moves == 'd':
-            ruk.turnDown()
+            ruk.turnDown(isClockwise)
         elif moves == 'f':
-            ruk.turnFront()
+            ruk.turnFront(isClockwise)
         elif moves == 'e':
-            ruk.turnEquator()
+            ruk.turnEquator(isClockwise)
         elif moves == 'm':
-            ruk.turnMiddle()
+            ruk.turnMiddle(isClockwise)
         moves = ''
     glPolygonMode(GL_FRONT, GL_LINE)
     glPolygonMode(GL_BACK, GL_LINE)
