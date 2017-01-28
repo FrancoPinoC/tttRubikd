@@ -46,7 +46,7 @@ instrucciones1 = "- Click and drag to rotate the whole cube around.\n" \
                  "   r: Right\n" \
                  "   l: Left\n" \
                  "   d: Down\n" \
-                 "   t: Top\n" \
+                 "   u: Up\n" \
                  "   e: Equator (horizontal line)\n" \
                  "   m: Middle (vertical line)\n" \
                  "  Clockwise rotations by default.\n" \
@@ -93,8 +93,8 @@ while run:
                     print tu1
                 else:
                     print tu2
-            if event.key == K_t:
-                moves = 't'
+            if event.key == K_u:
+                moves = 'u'
             if event.key == K_l:
                 moves = 'l'
             if event.key == K_r:
@@ -116,7 +116,7 @@ while run:
         if event.type == QUIT:
             run = False
 
-    ruk.paintAllMarkedFaces([[red], [green]])
+    ruk.paint_all_marked_faces([[red], [green]])
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
     glPolygonMode(GL_FRONT, GL_FILL)
     glPolygonMode(GL_BACK, GL_FILL)
@@ -127,10 +127,9 @@ while run:
         ruk.draw(cRGBL=cube2Colors, cExploreRot=True, cAngs=roAngs, cRot=[1, -1, 0])
     else:
         ruk.draw(cExploreRot=True, cAngs=roAngs, cRot=[1, -1, 0])
-        #ruk.draw(move=moves)
         # Meaning: If right click is pressed, make it counter-clockwise
         isClockwise = not clickstate[2]
-        if moves == 't':
+        if moves == 'u':
             ruk.turnUp(isClockwise)
         elif moves == 'l':
             ruk.turnLeft(isClockwise)
