@@ -1,12 +1,4 @@
-linesIndices = [[0,3,1],[3,6,1],[6,9,1],  # <- Horizontal lines.
-                      [0,7,3],[1,8,3],[2,9,3],  # <- Vertical lines.
-                      [0,9,4], [2,7,2]]         # <- Diagonals.
-
-linesD = {'up' : [0,3,1], 'equator' : [3,6,1], 'down' : [6,9,1],
-             'left' : [0,7,3], 'middle' : [1,8,3], 'right' : [2,9,3],
-             'forwardDiagonal' : [0,9,4], 'backDiagonal' : [2,7,2]}
-
-# Names are chosen (mostly) using the "Singmaster notation" with MES extension.
+# Face names are chosen (mostly) using the "Singmaster notation" with MES extension.
 # (how cool of a name is "Singmaster" btw, like daamn)
 # TODO: Abstract from turn[Direction] methods (having one for each possible turn feels dumb).
 from FaceModel import *
@@ -176,17 +168,13 @@ class RukubeModel:
         self.front.set_mid(sides[2])
         self.up.set_mid(sides[3])
 
-    def checkWinConsAt(self, face):
-        # Unlike with regular Tic-Tac-Toe, ties by double win might occur.
-        winners = [False, False]
-        for inds in linesIndices:
-            line = face[inds[0]:inds[1]:inds[2]]
-            winners[0] = (winners[0] or line == [1,1,1])
-            winners[1] = (winners[1] or line == [2,2,2])
-        return winners
+    def check_if_front_full(self):
+        return self.front.check_if_full()
 
-    def check_if_full(self, face):
-        for n in face:
-            if n == 0:
-                return False
-        return True
+    def check_wincons(self):
+        winners = [False, False]
+        for face in self.faces_dict.itervalues():
+            face_winners = face.check_wincon()
+            winners[0] = winners[0] or face_winners[0]
+            winners[1] = winners[1] or face_winners[1]
+        return winners
