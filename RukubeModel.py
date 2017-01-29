@@ -136,10 +136,10 @@ class RukubeModel:
     def turnFront(self, clockwise=True):
         self.front.rotate_face(clockwise)
 
-        ups_lower = self.up.get_lower(backwards=clockwise)
-        lefts_right = self.left.get_right(backwards=not clockwise)
-        rights_left = self.right.get_left(backwards=not clockwise)
-        downs_upper = self.down.get_upper(backwards=clockwise)
+        ups_lower = self.up.get_lower(backwards=not clockwise)
+        lefts_right = self.left.get_right(backwards=clockwise)
+        rights_left = self.right.get_left(backwards=clockwise)
+        downs_upper = self.down.get_upper(backwards=not clockwise)
 
         cw_factor = 1 if clockwise else -1
         sides = [ups_lower, lefts_right, rights_left, downs_upper][::cw_factor]
