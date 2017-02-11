@@ -29,7 +29,7 @@ class RukubeModel:
         :param content: Should probably be 1 or 2.
         :return:
         """
-        self.front.mark_cell(cellIndex, content)
+        return self.front.mark_cell(cellIndex, content)
 
     def rotateFaceSurface(self, faceVector, clockwise):
         """ Rotates a face's surface
@@ -72,10 +72,9 @@ class RukubeModel:
         l_upper = self.left.get_upper() # etc ^-^'...
         b_upper = self.back.get_upper()
         r_upper = self.right.get_upper()
-        cwFactor = 1 if clockwise else -1
-        sides = [b_upper, r_upper, l_upper, f_upper][::cwFactor]
+        cw_factor = 1 if clockwise else -1
+        sides = [b_upper, r_upper, l_upper, f_upper][::cw_factor]
         self.right.set_upper(sides[0])
-        # self.front[:3] = sides[1]
         self.front.set_upper(sides[1])
         self.back.set_upper(sides[2])
         self.left.set_upper(sides[3])

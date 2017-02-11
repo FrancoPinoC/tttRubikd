@@ -10,7 +10,10 @@ class FaceModel:
                             0, 0, 0]
 
     def mark_cell(self, cell_index, content):
+        if self.face_vector[cell_index] != 0:
+            return False
         self.face_vector[cell_index] = content
+        return True
 
     def rotate_face(self, clockwise):
         """ Rotates a face's surface

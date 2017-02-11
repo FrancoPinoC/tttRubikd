@@ -2,12 +2,10 @@ from Rukube import *
 from Inits import *
 import math
 from Auxiliary import *
+from Settings import *
 # Factor de ampliacion de imagen (entre menor es, mas grande se ve el objeto modelado)
-zmK = 1.6
-w = 700
-h = 700
-init_pygame((w, h), "woooo")
-init_opengl((w, h), zmK)
+init_pygame((GAME_WIDTH, GAME_HEIGHT), "woooo")
+init_opengl((GAME_WIDTH, GAME_HEIGHT), ZOOMING_FACTOR)
 
 glLoadIdentity()
 # Miramos hacia el centro, desde el lado negativo de Z, con un UP en el eje Y
@@ -25,18 +23,13 @@ flog = 0
 # ~ X<---(Z hacia dentro)
 roAngs = [0.0, 0.0, 0.0]
 
-# Factor de velocidad de giro en relacion a velocidad del mouse (entre mas grande mas rapido gira el cubo)
-rotK = 130
-
-# Iniciar cubo(s)
-ladoc1 = 200
-ruk = Rukube(ladoc1)
+ruk = Rukube(CUBE_SIDE)
 # cubeColors=(front, L, back, R, top, bottom)
 cubeColors = [ylw] + [green] + [red] + [prpl] + [cyan] + [orng]
 cube2Colors = [ylw] + [green] + [grey] + [cyan] + [red] + [orng]
 moves = ''
 # Da el lado "adyacente" usado en atan2 !*!
-trigoY = ladoc1
+trigoY = CUBE_SIDE
 Player = 1
 instrucciones1 = "- Click and drag to rotate the whole cube around.\n" \
                  "- Hover your mouse over the cell you want to mark,\n" \
@@ -51,7 +44,7 @@ instrucciones1 = "- Click and drag to rotate the whole cube around.\n" \
                  "   m: Middle (vertical line)\n" \
                  "  Clockwise rotations by default.\n" \
                  "  Right click while pressing the buttons to make it counterclockwise.\n" \
-                 "(unfinished demo)"
+                 "(this is an unfinished demo)"
 tu1 = "Turno de jugador 1"
 tu2 = "Turno de jugador 2"
 print instrucciones1
@@ -67,22 +60,22 @@ while run:
     clickstate = pygame.mouse.get_pressed()
     if clickstate[0]:
         if flog == 0:
-            pos0 = mousePos(w, h)
+            pos0 = mousePos(GAME_WIDTH, GAME_HEIGHT)
             flog = 1
         else:
-            pos1 = mousePos(w, h)
+            pos1 = mousePos(GAME_WIDTH, GAME_HEIGHT)
             # Mov horizontal provoca giro horizontal, que se aplica sobre el eje Y (por lo que se usa roAng[1]=ang en Y)
-            roAngs[1] += (math.atan2(pos0[0], trigoY) - math.atan2(pos1[0], trigoY)) * rotK  # !*!
+            roAngs[1] += (math.atan2(pos0[0], trigoY) - math.atan2(pos1[0], trigoY)) * ROTATION_MULTIPLIER  # !*!
             # Un giro vertical se aplica en el eje X
-            roAngs[0] += (math.atan2(pos0[1], trigoY) - math.atan2(pos1[1], trigoY)) * rotK
+            roAngs[0] += (math.atan2(pos0[1], trigoY) - math.atan2(pos1[1], trigoY)) * ROTATION_MULTIPLIER
             pos0 = pos1
     else:
         flog = 0
         roAngs = [0.0, 0.0, 0.0]
     # If the cube is not being moved, see if the mouse is over any of the front cells and if so, color that cell blue
-    ind = mouseOverQ(zmK, ladoc1, w, h, offset) if not flog else None
+    ind = mouseOverQ(ZOOMING_FACTOR, CUBE_SIDE, GAME_WIDTH, GAME_HEIGHT, CUBES_OFFSET) if not flog else None
     ruk.setMultiColors(range(26), [egg] * 6, False)
-    if ind != None:
+    if ind is not None:
         ruk.setSingleColors(ind, [blue] + [egg] * 5)
     for event in pygame.event.get():
         if event.type == KEYDOWN:
@@ -97,6 +90,7 @@ while run:
                 moves = 'u'
             if event.key == K_l:
                 moves = 'l'
+                ruk.model.turnLeft(not clickstate[2])
             if event.key == K_r:
                 moves = 'r'
             if event.key == K_d:
@@ -124,31 +118,30 @@ while run:
     if moves == '':
         ruk.draw(cExploreRot=True, cAngs=roAngs, cRot=[1, -1, 0])
     elif moves == 'color':
-        ruk.draw(cRGBL=cube2Colors, cExploreRot=True, cAngs=roAngs, cRot=[1, -1, 0])
+        ruk.draw(cExploreRot=True, cAngs=roAngs, cRot=[1, -1, 0], move='t')
     else:
         ruk.draw(cExploreRot=True, cAngs=roAngs, cRot=[1, -1, 0])
         # Meaning: If right click is pressed, make it counter-clockwise
         isClockwise = not clickstate[2]
         if moves == 'u':
-            ruk.turnUp(isClockwise)
-        elif moves == 'l':
-            ruk.turnLeft(isClockwise)
+            ruk.model.turnUp(isClockwise)
         elif moves == 'r':
-            ruk.turnRight(isClockwise)
+            ruk.model.turnRight(isClockwise)
         elif moves == 'd':
-            ruk.turnDown(isClockwise)
+            ruk.model.turnDown(isClockwise)
         elif moves == 'f':
-            ruk.turnFront(isClockwise)
+            ruk.model.turnFront(isClockwise)
         elif moves == 'e':
-            ruk.turnEquator(isClockwise)
+            ruk.model.turnEquator(isClockwise)
         elif moves == 'm':
-            ruk.turnMiddle(isClockwise)
+            ruk.model.turnMiddle(isClockwise)
         moves = ''
+
     glPolygonMode(GL_FRONT, GL_LINE)
     glPolygonMode(GL_BACK, GL_LINE)
     ruk.draw(cRGBL=[black] * 6, cExploreRot=True, cAngs=roAngs, cRot=[1, -1, 0])
-
     pygame.display.flip()
     pygame.time.wait(1000 / 100)
 pygame.quit()
 sys.exit
+
