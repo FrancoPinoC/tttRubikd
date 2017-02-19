@@ -105,29 +105,46 @@ class Rukube:
         self.paint_marked_face(player_colors, 5, self.D, self.model.get_face_as_vector('d'))
 
     def turn_front(self, clockwise=True):
-        self.model.turnFront(clockwise)
+        self.model.turn_front(clockwise)
 
-    def turn_up(self, clockwise=True):
-        self.model.turnUp(clockwise)
+    def turn_up(self, angle, clockwise=True, cRGBL=None):
+        pos_factor = self.lado + CUBES_OFFSET
+        pos_vector = [pos_factor, 0, -pos_factor]
+        clockwise_factor = 1 if clockwise else -1
+        if cRGBL is not None:
+            for i in range(26):
+                self.cubos[i].setColors(cRGBL)
+
+        for i in range(9):
+            self.cubos[self.u_indices[i]].draw(sz=[self.lado] * 3, Tpos=[pos_vector[i % 3], pos_factor, -pos_vector[i / 3]],
+                                               wAng=angle*clockwise_factor, wRot=[0, -1, 0])
+        j = 0
+        for i in range(8):
+            if i == 4:
+                j += 1
+            self.cubos[self.e_indices[i]].draw(sz=[self.lado] * 3, Tpos=[pos_vector[j % 3], 0, -pos_vector[j / 3]])
+            j += 1
+        for i in range(9):
+            self.cubos[self.d_Indices[i]].draw(sz=[self.lado] * 3, Tpos=[pos_vector[i % 3], -pos_factor, -pos_vector[i / 3]])
+        # self.model.turn_up(clockwise)
 
     def turn_left(self, clockwise=True):
-        self.model.turnLeft(clockwise)
+        self.model.turn_left(clockwise)
 
     def turn_right(self, clockwise=True):
-        self.model.turnRight(clockwise)
+        self.model.turn_right(clockwise)
 
     def turn_down(self, clockwise=True):
-        self.model.turnDown(clockwise)
+        self.model.turn_down(clockwise)
 
     def turn_equator(self, clockwise=True):
-        self.model.turnEquator(clockwise)
+        self.model.turn_equator(clockwise)
 
     def turn_middle(self, clockwise=True):
-        self.model.turnMiddle(clockwise)
+        self.model.turn_middle(clockwise)
 
     def draw(self, CTpos=(0,0,0), cWAng =0, cWRot=None,
         cAngs=(0.0, 0.0, 0.0), cRot=None,cExploreRot=False,cRGBL=None, move=None):
-        #
         posFactor = self.lado + CUBES_OFFSET
         posV = [posFactor+CTpos[0],0+CTpos[1],-posFactor+CTpos[2]]
         #Pinta las caras de acuerdo al color dado (cRGBL es vector de 6 colores)

@@ -10,8 +10,6 @@ init_opengl((GAME_WIDTH, GAME_HEIGHT), ZOOMING_FACTOR)
 glLoadIdentity()
 # Miramos hacia el centro, desde el lado negativo de Z, con un UP en el eje Y
 gluLookAt(200.0, 200.0, -2000.0, 0.0, 0.0, 0.0, 0, 1, 0)
-t0 = pygame.time.get_ticks()
-
 # Variable bandera
 flog = 0
 
@@ -51,9 +49,6 @@ print instrucciones1
 print tu1
 run = True
 while run:
-    t1 = pygame.time.get_ticks()
-    dt = (t1 - t0)
-    t0 = t1
     # ~ o1+=w1*dt
     # ~ o2+=w2*dt
     keystate = pygame.key.get_pressed()
@@ -88,23 +83,23 @@ while run:
                     print tu2
             if event.key == K_u:
                 moves = 'u'
-            if event.key == K_l:
+            elif event.key == K_l:
                 moves = 'l'
-                ruk.model.turnLeft(not clickstate[2])
-            if event.key == K_r:
+                ruk.model.turn_left(not clickstate[2])
+            elif event.key == K_r:
                 moves = 'r'
-            if event.key == K_d:
+            elif event.key == K_d:
                 moves = 'd'
-            if event.key == K_f:
+            elif event.key == K_f:
                 moves = 'f'
-            if event.key == K_e:
+            elif event.key == K_e:
                 moves = 'e'
-            if event.key == K_m:
+            elif event.key == K_m:
                 moves = 'm'
-            if event.key == K_c:
+            elif event.key == K_c:
                 moves = 'color'
                 print 'colores! \n Presione ENTER para cancelar'
-            if event.key == K_RETURN:
+            elif event.key == K_RETURN:
                 moves = ''
 
         if event.type == QUIT:
@@ -124,17 +119,17 @@ while run:
         # Meaning: If right click is pressed, make it counter-clockwise
         isClockwise = not clickstate[2]
         if moves == 'u':
-            ruk.model.turnUp(isClockwise)
+            ruk.model.turn_up(isClockwise)
         elif moves == 'r':
-            ruk.model.turnRight(isClockwise)
+            ruk.model.turn_right(isClockwise)
         elif moves == 'd':
-            ruk.model.turnDown(isClockwise)
+            ruk.model.turn_down(isClockwise)
         elif moves == 'f':
-            ruk.model.turnFront(isClockwise)
+            ruk.model.turn_front(isClockwise)
         elif moves == 'e':
-            ruk.model.turnEquator(isClockwise)
+            ruk.model.turn_equator(isClockwise)
         elif moves == 'm':
-            ruk.model.turnMiddle(isClockwise)
+            ruk.model.turn_middle(isClockwise)
         moves = ''
 
     glPolygonMode(GL_FRONT, GL_LINE)

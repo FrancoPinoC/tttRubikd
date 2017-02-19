@@ -58,7 +58,7 @@ class RukubeModel:
         faceVector[:3] = sides[2][::-cwFactor] #
         faceVector[::3] = sides[3][::cwFactor] #
 
-    def turnUp(self, clockwise=True):
+    def turn_up(self, clockwise=True):
         """
         Does a quarter turn of the Up face.
         :param clockwise: Whether the turn is clockwise or not (when looking directly at the face)
@@ -79,7 +79,7 @@ class RukubeModel:
         self.back.set_upper(sides[2])
         self.left.set_upper(sides[3])
 
-    def turnDown(self, clockwise=True):
+    def turn_down(self, clockwise=True):
         self.down.rotate_face(clockwise)
         front_low = self.front.get_lower()
         left_low = self.left.get_lower()
@@ -92,7 +92,7 @@ class RukubeModel:
         self.back.set_lower(sides[2])
         self.left.set_lower(sides[3])
 
-    def turnLeft(self, clockwise=True):
+    def turn_left(self, clockwise=True):
 
         self.left.rotate_face(clockwise)
         # Parts from other faces corresponding to sides that touch the left face:
@@ -109,7 +109,7 @@ class RukubeModel:
         self.front.set_left(sides[2])
         self.up.set_left(sides[3])
 
-    def turnRight(self, clockwise=True):
+    def turn_right(self, clockwise=True):
         self.right.rotate_face(clockwise)
         # Parts from other faces corresponding to sides that touch the right face:
         fronts_right = self.front.get_right()
@@ -124,7 +124,7 @@ class RukubeModel:
         self.front.set_right(sides[2])
         self.up.set_right(sides[3])
 
-    def turnFront(self, clockwise=True):
+    def turn_front(self, clockwise=True):
         self.front.rotate_face(clockwise)
 
         ups_lower = self.up.get_lower(backwards=not clockwise)
@@ -139,7 +139,7 @@ class RukubeModel:
         self.down.set_upper(sides[2])
         self.left.set_right(sides[3])
 
-    def turnEquator(self, clockwise=True):
+    def turn_equator(self, clockwise=True):
         # Direction is as in the Down face.
         frontsEi = self.front.get_equator()
         leftsEi = self.left.get_equator()
@@ -153,7 +153,7 @@ class RukubeModel:
         self.back.set_equator(sides[2])
         self.left.set_equator(sides[3])
 
-    def turnMiddle(self, clockwise=True):
+    def turn_middle(self, clockwise=True):
         # Direction as Left face.
         frontsMi = self.front.get_mid()
         upsMi = self.up.get_mid(backwards=not clockwise)

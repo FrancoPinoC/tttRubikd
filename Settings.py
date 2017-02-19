@@ -28,3 +28,23 @@ egg = [0.95, 0.95, 0.95, 1]
 
 PLAYER_ONE_COLOR = red
 PLAYER_TWO_COLOR = green
+NEW_TURN_MESSAGE = "It's Player {0}'s turn!"
+MARKED_OVER_MARKED_MESSAGE = "You tried to mark over an already marked spot Player {0}... try again"
+WIN_MESSAGE = "WOOOOO, PLAYER {0} WON! \n Suck it, Player {1}"
+DOUBLE_WIN_MESSAGE = "YOU BOTH WON! ...? ... I mean, I don't know, is that good? D-Do you feel good about that?"
+OUT_OF_MOVES_MESSAGE = "So the whole front face is full... um... NOBODY WON, WOO \\o/!"
+
+INSTRUCTIONS = "- Click and drag to rotate the whole cube around.\n" \
+                 "- Hover your mouse over the cell you want to mark,\n" \
+                 "  then press the spacebar to do so. P1 is red, P2 is green.\n" \
+                 "- How to rotate individual faces \n" \
+                 "   f: Front face (the one that faces you when the cube is still)\n" \
+                 "   r: Right\n" \
+                 "   l: Left\n" \
+                 "   d: Down\n" \
+                 "   u: Up\n" \
+                 "   e: Equator (horizontal line)\n" \
+                 "   m: Middle (vertical line)\n" \
+                 "  Clockwise rotations by default.\n" \
+                 "  Right click while pressing the buttons to make it counterclockwise.\n" \
+                 "(this is an unfinished demo)"
