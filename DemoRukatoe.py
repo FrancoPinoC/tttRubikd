@@ -74,13 +74,13 @@ while run:
         ruk.setSingleColors(ind, [blue] + [egg] * 5)
     for event in pygame.event.get():
         if event.type == KEYDOWN:
-            if event.key == K_SPACE and ind != None and ruk.FV[ind] == 0:
-                ruk.marcar(k=ind, P=Player)
-                Player = Player % 2 + 1
-                if Player == 1:
-                    print tu1
+            if event.key == K_SPACE and ind is not None:
+                marked = ruk.marcar(k=ind, P=Player)
+                if marked:
+                    print "marcado"
+                    Player = Player % 2 + 1
                 else:
-                    print tu2
+                    print MARKED_OVER_MARKED_MESSAGE.format(Player)
             if event.key == K_u:
                 moves = 'u'
             elif event.key == K_l:

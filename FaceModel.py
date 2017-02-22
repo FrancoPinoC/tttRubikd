@@ -55,7 +55,8 @@ class FaceModel:
 
     def check_if_full(self):
         for cell in self.face_vector:
-            if cell == 0: return False
+            if cell == 0:
+                return False
         return True
 
     def get_face_vector(self):

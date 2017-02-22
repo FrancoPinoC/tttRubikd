@@ -80,7 +80,6 @@ class Rukube:
     #Marca una casilla de la cara frontal como pintada
     # k = casilla en la que se dibuja (de 0 a 8), P=jugador que hace marca (1 o 2)
     def marcar(self,k, P):
-        # TODO: If cell is already marked, return false or something and don't paint over it
         return self.model.markFront(k,P)
 
     @staticmethod

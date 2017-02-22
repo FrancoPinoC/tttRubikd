@@ -61,14 +61,16 @@ def marking_phase(game_runner):
         ind = mouseOverQ(ZOOMING_FACTOR, CUBE_SIDE, GAME_WIDTH, GAME_HEIGHT, CUBES_OFFSET)
     else:
         ind = None
+    # Sets the base colors of the cube (remove this and everything stays black).
     game_cube.setMultiColors(range(26), [egg] * 6, False)
     if ind is not None:
         game_cube.setSingleColors(ind, [blue] + [egg] * 5)
 
     for event in pygame.event.get():
-        if event.type == KEYDOWN and event.key == K_SPACE and ind is not None and game_cube.FV[ind] == 0:
+        if event.type == KEYDOWN and event.key == K_SPACE and (ind is not None):
             marked = game_cube.marcar(k=ind, P=game_runner.current_player)
             if marked:
+                print "marcado"
                 next_phase = turning_phase
             else:
                 print MARKED_OVER_MARKED_MESSAGE.format(game_runner.current_player)
@@ -83,6 +85,7 @@ def turning_phase(game_runner):
     ROT_CALCULATOR.calculate(clickstate)
     next_phase = turning_phase
     game_cube = game_runner.cube
+    game_cube.setMultiColors(range(26), [egg] * 6, False)
     game_model = game_cube.model
     is_clockwise = not clickstate[2]
     for event in pygame.event.get():
@@ -118,11 +121,12 @@ def animation_phase_generator(turning_method, model_turn_method, is_clockwise):
     # The way I'm using this stuff requires them accepting a game runner argument, which I guess I should change, but eh
     def animation_phase(game_runner):
         global TURNING_ANGLE
-        game_cube = game_runner
+        game_cube = game_runner.cube
+        game_cube.setMultiColors(range(26), [egg] * 6, False)
         for event in pygame.event.get():
             if event.type == QUIT:
                 game_runner.running = False
-        if TURNING_ANGLE <= 45:
+        if TURNING_ANGLE <= 90:
             game_cube.paint_all_marked_faces([[red], [green]])
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
             glPolygonMode(GL_FRONT, GL_FILL)
@@ -133,7 +137,7 @@ def animation_phase_generator(turning_method, model_turn_method, is_clockwise):
             glPolygonMode(GL_BACK, GL_LINE)
             turning_method(TURNING_ANGLE, is_clockwise, cRGBL=[black] * 6)
 
-            TURNING_ANGLE += 1
+            TURNING_ANGLE += 2.7
             # I think I'm abusing closures here, seriously consider classes yo. How about animating on Rukube instead?
             # And yes, the animation_phase being returned does have the correct turning_method set inside. That's cool.
             return animation_phase
@@ -150,7 +154,10 @@ def animation_phase_generator(turning_method, model_turn_method, is_clockwise):
             glPolygonMode(GL_BACK, GL_LINE)
             turning_method(TURNING_ANGLE, is_clockwise, cRGBL=[black] * 6)
             return end_a_turn(game_runner)
+    return animation_phase
     # TODO: Actually, whatever, I can animate the whole thing inside the one function instead of making Game.py do it.
+    # TODO: Also, I should make it better and have a feeling of acceleration rather than just always same velocity.
+    # After testing: Yes, definitely need the cool acceleration feel.
 
 
 def end_a_turn(game_runner):
@@ -159,16 +166,17 @@ def end_a_turn(game_runner):
     # You know, maybe all these functions should just be part of the GameRunner class
     winners = game_cube_model.check_wincons()
     if winners[1] ^ winners[0]:
-        winner = 1 if winners[1] else 0
-        print WIN_MESSAGE.format(winner, (winner + 1) % 2)
+        winner = 1 if winners[0] else 2
+        print WIN_MESSAGE.format(winner, (winner % 2) + 1)
         next_phase = game_over
     elif winners[1] and winners[0]:
         print DOUBLE_WIN_MESSAGE
         next_phase = game_over
-    elif game_cube_model.check_if_front_full:
+    elif game_cube_model.check_if_front_full():
         print OUT_OF_MOVES_MESSAGE
         next_phase = game_over
-    game_runner.change_player()
+    else:
+        game_runner.change_player()
     return next_phase
 
 
@@ -176,6 +184,7 @@ def game_over(game_runner):
     clickstate = pygame.mouse.get_pressed()
     ROT_CALCULATOR.calculate(clickstate)
     game_cube = game_runner.cube
+    game_cube.setMultiColors(range(26), [egg] * 6, False)
     for event in pygame.event.get():
         if event.type == QUIT:
             game_runner.running = False
