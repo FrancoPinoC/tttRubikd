@@ -140,13 +140,13 @@ class RukubeModel:
         self.left.set_right(sides[3])
 
     def turn_equator(self, clockwise=True):
-        # Direction is as in the Down face.
+        # Direction is as in the Up face.
         frontsEi = self.front.get_equator()
         leftsEi = self.left.get_equator()
         rightsEi = self.right.get_equator()
         backsEi = self.back.get_equator()
 
-        cwFactor = -1 if clockwise else 1
+        cwFactor = 1 if clockwise else -1
         sides = [backsEi, rightsEi, leftsEi, frontsEi][::cwFactor]
         self.right.set_equator(sides[0])
         self.front.set_equator(sides[1])

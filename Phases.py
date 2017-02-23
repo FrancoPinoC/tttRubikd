@@ -137,7 +137,7 @@ def animation_phase_generator(turning_method, model_turn_method, is_clockwise):
             glPolygonMode(GL_BACK, GL_LINE)
             turning_method(TURNING_ANGLE, is_clockwise, cRGBL=[black] * 6)
 
-            TURNING_ANGLE += 2.7
+            TURNING_ANGLE += 4.2
             # I think I'm abusing closures here, seriously consider classes yo. How about animating on Rukube instead?
             # And yes, the animation_phase being returned does have the correct turning_method set inside. That's cool.
             return animation_phase

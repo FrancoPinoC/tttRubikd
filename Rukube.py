@@ -1,7 +1,12 @@
 from CubeClass import *
 from RukubeModel import *
 from Settings import *
-
+# 3D Axis Reference:
+# ~      Y
+# ~      ^
+# ~      |
+# ~      |
+# ~ X<---(Z inwards)
 
 class Rukube:
     def __init__(self,lado):
@@ -36,13 +41,13 @@ class Rukube:
         self.D = [cubos[6], cubos[7], cubos[8],
                   cubos[15], cubos[16], cubos[17],
                   cubos[18], cubos[19], cubos[20]]
-        self.d_Indices = [6, 7, 8, 15, 16, 17, 18, 19, 20]
+        self.d_indices = [6, 7, 8, 15, 16, 17, 18, 19, 20]
         self.DV = [0, 0, 0, 0, 0, 0, 0, 0, 0]
         # Left
         self.L = [cubos[9],cubos[12],cubos[0],
                 cubos[21],cubos[22],cubos[3],
                 cubos[18],cubos[15],cubos[6]]
-        self.l_indices =[9, 12, 0, 21, 22, 3, 18, 15, 6]
+        self.l_indices =[0, 12, 9, 3, 22, 21, 6, 15, 18]
         self.LV = [0,0,0, 0,0,0, 0,0,0]
         # Right
         self.R = [cubos[2],cubos[14],cubos[11],
@@ -56,11 +61,11 @@ class Rukube:
                   cubos[20], cubos[19], cubos[18]]
         self.b_indices=[11, 10, 9, 24, 25, 21, 20, 19, 18]
         self.BV = [0, 0, 0, 0, 0, 0, 0, 0, 0]
-        # Indices de cubos en la linea zona entre cara frontal y trasera
+        # Indices of cubes between the front and back faces
         self.standing_indices = [12, 13, 14, 22, 23, 15, 16, 17]
-        # Indices de cubos en la linea entre cara izquierda y derecha
+        # Indices of cubes between left and right
         self.mid_indices = [1, 13, 10, 4, 25, 7, 16, 19]
-        # Indices de cubos en la linea entre cara superior e inferior
+        # Indices of cubes between up and down faces
         self.e_indices = [3, 4, 5, 22, 23, 21, 25, 24]
         
     # Fija nuevos colores para algun cubo k
@@ -103,8 +108,27 @@ class Rukube:
         self.paint_marked_face(player_colors, 4, self.U, self.model.get_face_as_vector('u'))
         self.paint_marked_face(player_colors, 5, self.D, self.model.get_face_as_vector('d'))
 
-    def turn_front(self, clockwise=True):
-        self.model.turn_front(clockwise)
+    def turn_front(self, angle, clockwise=True, cRGBL=None):
+        pos_factor = self.lado + CUBES_OFFSET
+        pos_vector = [pos_factor, 0, -pos_factor]
+        clockwise_factor = 1 if clockwise else -1
+        if cRGBL is not None:
+            for i in range(26):
+                self.cubos[i].setColors(cRGBL)
+        for i in range(9):
+            self.cubos[self.f_indices[i]].draw(sz=[self.lado] * 3,
+                                               Tpos=[pos_vector[i % 3], pos_vector[i / 3], -pos_factor],
+                                               wAng=angle * clockwise_factor, wRot=[0, 0, 1])
+        j = 0
+        for i in range(8):
+            if i == 4:
+                j += 1
+            self.cubos[self.standing_indices[i]].draw(sz=[self.lado] * 3,
+                                                 Tpos=[pos_vector[j % 3], pos_vector[j / 3], 0])
+            j += 1
+        for i in range(9):
+            self.cubos[self.b_indices[i]].draw(sz=[self.lado] * 3,
+                                               Tpos=[pos_vector[i % 3], pos_vector[i / 3], pos_factor])
 
     def turn_up(self, angle, clockwise=True, cRGBL=None):
         pos_factor = self.lado + CUBES_OFFSET
@@ -115,35 +139,134 @@ class Rukube:
                 self.cubos[i].setColors(cRGBL)
 
         for i in range(9):
-            self.cubos[self.u_indices[i]].draw(sz=[self.lado] * 3, Tpos=[pos_vector[i % 3], pos_factor, -pos_vector[i / 3]],
-                                               wAng=angle*clockwise_factor, wRot=[0, -1, 0])
+            self.cubos[self.u_indices[i]].draw(sz=[self.lado] * 3,
+                                               Tpos=[pos_vector[i % 3], pos_factor, -pos_vector[i / 3]],
+                                               wAng=angle * clockwise_factor, wRot=[0, -1, 0])
         j = 0
         for i in range(8):
             if i == 4:
                 j += 1
-            self.cubos[self.e_indices[i]].draw(sz=[self.lado] * 3, Tpos=[pos_vector[j % 3], 0, -pos_vector[j / 3]])
+            self.cubos[self.e_indices[i]].draw(sz=[self.lado] * 3,
+                                               Tpos=[pos_vector[j % 3], 0, -pos_vector[j / 3]])
             j += 1
         for i in range(9):
-            self.cubos[self.d_Indices[i]].draw(sz=[self.lado] * 3, Tpos=[pos_vector[i % 3], -pos_factor, -pos_vector[i / 3]])
-        # self.model.turn_up(clockwise)
+            self.cubos[self.d_indices[i]].draw(sz=[self.lado] * 3,
+                                               Tpos=[pos_vector[i % 3], -pos_factor, -pos_vector[i / 3]])
 
-    def turn_left(self, clockwise=True):
-        self.model.turn_left(clockwise)
+    def turn_left(self, angle, clockwise=True, cRGBL=None):
+        pos_factor = self.lado + CUBES_OFFSET
+        pos_vector = [pos_factor, 0, -pos_factor]
+        clockwise_factor = 1 if clockwise else -1
+        if cRGBL is not None:
+            for i in range(26):
+                self.cubos[i].setColors(cRGBL)
+        for i in range(9):
+            self.cubos[self.l_indices[i]].draw(sz=[self.lado] * 3,
+                                               Tpos=[pos_factor, pos_vector[i / 3], -pos_vector[i % 3]],
+                                               wAng=angle*clockwise_factor, wRot=[-1, 0, 0])
+        j = 0
+        for i in range(8):
+            if i == 4:
+                j += 1
+            self.cubos[self.mid_indices[i]].draw(sz=[self.lado] * 3,
+                                               Tpos=[0, pos_vector[j / 3], -pos_vector[j % 3]])
+            j += 1
+        for i in range(9):
+            self.cubos[self.r_indices[i]].draw(sz=[self.lado] * 3,
+                                               Tpos=[-pos_factor, pos_vector[i / 3], -pos_vector[i % 3]])
 
-    def turn_right(self, clockwise=True):
-        self.model.turn_right(clockwise)
+    def turn_right(self, angle, clockwise=True, cRGBL=None):
+        pos_factor = self.lado + CUBES_OFFSET
+        pos_vector = [pos_factor, 0, -pos_factor]
+        clockwise_factor = 1 if clockwise else -1
+        if cRGBL is not None:
+            for i in range(26):
+                self.cubos[i].setColors(cRGBL)
+        for i in range(9):
+            self.cubos[self.r_indices[i]].draw(sz=[self.lado] * 3,
+                                               Tpos=[-pos_factor, pos_vector[i / 3], -pos_vector[i % 3]],
+                                               wAng=angle * clockwise_factor, wRot=[1, 0, 0])
+        j = 0
+        for i in range(8):
+            if i == 4:
+                j += 1
+            self.cubos[self.mid_indices[i]].draw(sz=[self.lado] * 3,
+                                                 Tpos=[0, pos_vector[j / 3], -pos_vector[j % 3]])
+            j += 1
+        for i in range(9):
+            self.cubos[self.l_indices[i]].draw(sz=[self.lado] * 3,
+                                               Tpos=[pos_factor, pos_vector[i / 3], -pos_vector[i % 3]])
 
-    def turn_down(self, clockwise=True):
-        self.model.turn_down(clockwise)
+    def turn_down(self, angle, clockwise=True, cRGBL=None):
+        pos_factor = self.lado + CUBES_OFFSET
+        pos_vector = [pos_factor, 0, -pos_factor]
+        clockwise_factor = 1 if clockwise else -1
+        if cRGBL is not None:
+            for i in range(26):
+                self.cubos[i].setColors(cRGBL)
 
-    def turn_equator(self, clockwise=True):
-        self.model.turn_equator(clockwise)
+        for i in range(9):
+            self.cubos[self.d_indices[i]].draw(sz=[self.lado] * 3,
+                                               Tpos=[pos_vector[i % 3], -pos_factor, -pos_vector[i / 3]],
+                                               wAng=angle * clockwise_factor, wRot=[0, 1, 0])
+        j = 0
+        for i in range(8):
+            if i == 4:
+                j += 1
+            self.cubos[self.e_indices[i]].draw(sz=[self.lado] * 3,
+                                               Tpos=[pos_vector[j % 3], 0, -pos_vector[j / 3]])
+            j += 1
+        for i in range(9):
+            self.cubos[self.u_indices[i]].draw(sz=[self.lado] * 3,
+                                               Tpos=[pos_vector[i % 3], pos_factor, -pos_vector[i / 3]])
 
-    def turn_middle(self, clockwise=True):
-        self.model.turn_middle(clockwise)
+    def turn_equator(self, angle, clockwise=True, cRGBL=None):
+        pos_factor = self.lado + CUBES_OFFSET
+        pos_vector = [pos_factor, 0, -pos_factor]
+        clockwise_factor = 1 if clockwise else -1
+        if cRGBL is not None:
+            for i in range(26):
+                self.cubos[i].setColors(cRGBL)
+
+        for i in range(9):
+            self.cubos[self.u_indices[i]].draw(sz=[self.lado] * 3,
+                                               Tpos=[pos_vector[i % 3], pos_factor, -pos_vector[i / 3]])
+        j = 0
+        for i in range(8):
+            if i == 4:
+                j += 1
+            self.cubos[self.e_indices[i]].draw(sz=[self.lado] * 3,
+                                               Tpos=[pos_vector[j % 3], 0, -pos_vector[j / 3]],
+                                               wAng=angle * clockwise_factor, wRot=[0, -1, 0])
+            j += 1
+        for i in range(9):
+            self.cubos[self.d_indices[i]].draw(sz=[self.lado] * 3,
+                                               Tpos=[pos_vector[i % 3], -pos_factor, -pos_vector[i / 3]])
+
+    def turn_middle(self, angle, clockwise=True, cRGBL=None):
+        pos_factor = self.lado + CUBES_OFFSET
+        pos_vector = [pos_factor, 0, -pos_factor]
+        clockwise_factor = 1 if clockwise else -1
+        if cRGBL is not None:
+            for i in range(26):
+                self.cubos[i].setColors(cRGBL)
+        for i in range(9):
+            self.cubos[self.l_indices[i]].draw(sz=[self.lado] * 3,
+                                               Tpos=[pos_factor, pos_vector[i / 3], -pos_vector[i % 3]])
+        j = 0
+        for i in range(8):
+            if i == 4:
+                j += 1
+            self.cubos[self.mid_indices[i]].draw(sz=[self.lado] * 3,
+                                                 Tpos=[0, pos_vector[j / 3], -pos_vector[j % 3]],
+                                                 wAng=angle * clockwise_factor, wRot=[-1, 0, 0])
+            j += 1
+        for i in range(9):
+            self.cubos[self.r_indices[i]].draw(sz=[self.lado] * 3,
+                                               Tpos=[-pos_factor, pos_vector[i / 3], -pos_vector[i % 3]])
 
     def draw(self, CTpos=(0,0,0), cWAng =0, cWRot=None,
-        cAngs=(0.0, 0.0, 0.0), cRot=None,cExploreRot=False,cRGBL=None, move=None):
+             cAngs=(0.0, 0.0, 0.0), cRot=None,cExploreRot=False,cRGBL=None, move=None):
         posFactor = self.lado + CUBES_OFFSET
         posV = [posFactor+CTpos[0],0+CTpos[1],-posFactor+CTpos[2]]
         #Pinta las caras de acuerdo al color dado (cRGBL es vector de 6 colores)
@@ -165,20 +288,5 @@ class Rukube:
                 if i > 4: j = i-1
                 else: j = i
                 self.cubos[self.standing_indices[j]].draw(sz=[self.lado] * 3, Tpos=[posV[i % 3], posV[i / 3], 0],
-                                                          wAng=cWAng, wRot=cWRot, rot=cRot, angs=cAngs, exploreRot=cExploreRot)
-        else:
-            #Move top
-            if move == 't':
-                for i in range(9):
-                    self.cubos[self.u_indices[i]].draw(sz=[self.lado] * 3, Tpos=[posV[i % 3], posFactor, -posV[i / 3]],
-                                                       wAng=45, wRot=[0, -1, 0])
-                j = 0
-                for i in range(8):
-                    if i == 4:
-                        j += 1
-                    self.cubos[self.e_indices[i]].draw(sz=[self.lado] * 3, Tpos=[posV[j % 3], 0, -posV[j / 3]])
-                    j += 1
-                for i in range(9):
-                    self.cubos[self.d_Indices[i]].draw(sz=[self.lado] * 3, Tpos=[posV[i % 3], -posFactor, -posV[i / 3]])
-        
-        
+                                                          wAng=cWAng, wRot=cWRot, rot=cRot, angs=cAngs,
+                                                          exploreRot=cExploreRot)
