@@ -70,7 +70,7 @@ def marking_phase(game_runner):
         if event.type == KEYDOWN and event.key == K_SPACE and (ind is not None):
             marked = game_cube.marcar(k=ind, P=game_runner.current_player)
             if marked:
-                print "marcado"
+                print CORRECT_MARK_MESSAGE
                 next_phase = turning_phase
             else:
                 print MARKED_OVER_MARKED_MESSAGE.format(game_runner.current_player)
@@ -82,7 +82,6 @@ def marking_phase(game_runner):
 
 def turning_phase(game_runner):
     clickstate = pygame.mouse.get_pressed()
-    ROT_CALCULATOR.calculate(clickstate)
     next_phase = turning_phase
     game_cube = game_runner.cube
     game_cube.setMultiColors(range(26), [egg] * 6, False)
@@ -91,25 +90,25 @@ def turning_phase(game_runner):
     for event in pygame.event.get():
         if event.type == KEYDOWN:
             if event.key == K_u:
-                print "\t Turning Up Face"
+                print "\tTurning Up Face"
                 next_phase = animation_phase_generator(game_cube.turn_up, game_model.turn_up, is_clockwise)
             elif event.key == K_l:
-                print "\t Turning Left Face"
+                print "\tTurning Left Face"
                 next_phase = animation_phase_generator(game_cube.turn_left, game_model.turn_left, is_clockwise)
             elif event.key == K_r:
-                print "\t Turning Right Face"
-                next_phase = animation_phase_generator(game_cube.turn_right, game_model.turn_right, is_clockwise)
+                print "\tTurning Right Face"
+                next_phase = animation_phase_generator(game_cube.turn_right, game_model.turn_right, not is_clockwise)
             elif event.key == K_d:
-                print "\t Turning Down Face"
-                next_phase = animation_phase_generator(game_cube.turn_down,game_model.turn_down, is_clockwise)
+                print "\tTurning Down Face"
+                next_phase = animation_phase_generator(game_cube.turn_down,game_model.turn_down, not is_clockwise)
             elif event.key == K_f:
-                print "\t Turning Front Face"
+                print "\tTurning Front Face"
                 next_phase = animation_phase_generator(game_cube.turn_front,game_model.turn_front, is_clockwise)
             elif event.key == K_e:
-                print "\t Turning Equator"
+                print "\tTurning Equator"
                 next_phase = animation_phase_generator(game_cube.turn_equator,game_model.turn_equator, is_clockwise)
             elif event.key == K_m:
-                print "\t Turning Middle"
+                print "\tTurning Middle"
                 next_phase = animation_phase_generator(game_cube.turn_middle,game_model.turn_middle, is_clockwise)
         if event.type == QUIT:
             game_runner.running = False
@@ -168,19 +167,19 @@ def end_a_turn(game_runner):
     if winners[1] ^ winners[0]:
         winner = 1 if winners[0] else 2
         print WIN_MESSAGE.format(winner, (winner % 2) + 1)
-        next_phase = game_over
+        next_phase = cube_exploring
     elif winners[1] and winners[0]:
         print DOUBLE_WIN_MESSAGE
-        next_phase = game_over
+        next_phase = cube_exploring
     elif game_cube_model.check_if_front_full():
         print OUT_OF_MOVES_MESSAGE
-        next_phase = game_over
+        next_phase = cube_exploring
     else:
         game_runner.change_player()
     return next_phase
 
 
-def game_over(game_runner):
+def cube_exploring(game_runner):
     clickstate = pygame.mouse.get_pressed()
     ROT_CALCULATOR.calculate(clickstate)
     game_cube = game_runner.cube
@@ -189,4 +188,4 @@ def game_over(game_runner):
         if event.type == QUIT:
             game_runner.running = False
     standard_draw(game_cube)
-    return game_over
+    return cube_exploring

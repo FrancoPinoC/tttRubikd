@@ -8,9 +8,12 @@ from Settings import *
 # ~      |
 # ~ X<---(Z inwards)
 
+# Here and in the model clockwise sense for all outer faces is defined as clockwise when you are looking directly at
+# that face. However, in game, all horizontal faces (up, equator, down) rotate rotate with up's clockwise, and all
+# vertical faces (left, middle, right) rotate with the left's clockwise.
 class Rukube:
     def __init__(self,lado):
-        # Hecho de 26 cubos distintos (un cubo en el centro no es necesario)
+        # It's made of 26 different cubes (there's no need for a cube at the center of it all)
         cubos = []
         for i in range(26):
             cubos += [cubo(0, 0, 0, 0.5, egg)]
@@ -221,6 +224,7 @@ class Rukube:
                                                Tpos=[pos_vector[i % 3], pos_factor, -pos_vector[i / 3]])
 
     def turn_equator(self, angle, clockwise=True, cRGBL=None):
+        # Follows the up clockwise
         pos_factor = self.lado + CUBES_OFFSET
         pos_vector = [pos_factor, 0, -pos_factor]
         clockwise_factor = 1 if clockwise else -1
@@ -244,6 +248,7 @@ class Rukube:
                                                Tpos=[pos_vector[i % 3], -pos_factor, -pos_vector[i / 3]])
 
     def turn_middle(self, angle, clockwise=True, cRGBL=None):
+        # Clockwiseness defined by left face.
         pos_factor = self.lado + CUBES_OFFSET
         pos_vector = [pos_factor, 0, -pos_factor]
         clockwise_factor = 1 if clockwise else -1

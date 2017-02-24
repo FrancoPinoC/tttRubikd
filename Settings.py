@@ -10,7 +10,7 @@ ROTATION_MULTIPLIER = 130
 
 CUBE_SIDE = 200
 # Extra separation between cubes, so as not to draw them too close together
-CUBES_OFFSET = 6
+CUBES_OFFSET = 5
 
 # Colors
 red = [0.9, 0.0, 0.0, 1]
@@ -28,11 +28,15 @@ egg = [0.95, 0.95, 0.95, 1]
 
 PLAYER_ONE_COLOR = red
 PLAYER_TWO_COLOR = green
-NEW_TURN_MESSAGE = "It's Player {0}'s turn!"
-MARKED_OVER_MARKED_MESSAGE = "You tried to mark over an already marked spot Player {0}... try again"
-WIN_MESSAGE = "WOOOOO, PLAYER {0} WON! \n Suck it, Player {1}"
-DOUBLE_WIN_MESSAGE = "YOU BOTH WON! ...? ... I mean, I don't know, is that good? D-Do you feel good about that?"
-OUT_OF_MOVES_MESSAGE = "So the whole front face is full... um... NOBODY WON, WOO \\o/!"
+PLAYER_ONE_BG = [1.0, 0.9, 0.9, 1.0]
+PLAYER_TWO_BG = [0.8, 1.0, 0.7, 1.0]
+NEW_TURN_MESSAGE = "It's Player {0}'s turn!\n" \
+                   "\tMark one of the avilable spaces now"
+MARKED_OVER_MARKED_MESSAGE = "\tYou tried to mark over an already marked spot Player {0}... try again"
+CORRECT_MARK_MESSAGE = "\tMarked a space. Turn one of the cubes faces now!"
+WIN_MESSAGE = "\nWOOOOO, PLAYER {0} WON! \n Suck it, Player {1}"
+DOUBLE_WIN_MESSAGE = "\nYOU BOTH WON! ...? ... I mean, I don't know, is that good? D-Do you feel good about that?"
+OUT_OF_MOVES_MESSAGE = "\nSo the whole front face is full... um... NOBODY WON, WOO \\o/!"
 
 INSTRUCTIONS = "- Click and drag to rotate the whole cube around.\n" \
                  "- Hover your mouse over the cell you want to mark,\n" \
@@ -47,4 +51,5 @@ INSTRUCTIONS = "- Click and drag to rotate the whole cube around.\n" \
                  "   m: Middle (vertical line)\n" \
                  "  Clockwise rotations by default.\n" \
                  "  Right click while pressing the buttons to make it counterclockwise.\n" \
-                 "(this is an unfinished demo)"
+                 "(this is an unfinished demo).\n" \
+                 "******************************\n"
