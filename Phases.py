@@ -2,6 +2,7 @@ import math
 from Auxiliary import *
 from Settings import *
 
+
 # Calculates rotation for when a player explores the cube via left click of the mouse.
 class RotationCalculator:
     def __init__(self):
@@ -100,16 +101,16 @@ def turning_phase(game_runner):
                 next_phase = animation_phase_generator(game_cube.turn_right, game_model.turn_right, not is_clockwise)
             elif event.key == K_d:
                 print "\tTurning Down Face"
-                next_phase = animation_phase_generator(game_cube.turn_down,game_model.turn_down, not is_clockwise)
+                next_phase = animation_phase_generator(game_cube.turn_down, game_model.turn_down, not is_clockwise)
             elif event.key == K_f:
                 print "\tTurning Front Face"
-                next_phase = animation_phase_generator(game_cube.turn_front,game_model.turn_front, is_clockwise)
+                next_phase = animation_phase_generator(game_cube.turn_front, game_model.turn_front, is_clockwise)
             elif event.key == K_e:
                 print "\tTurning Equator"
-                next_phase = animation_phase_generator(game_cube.turn_equator,game_model.turn_equator, is_clockwise)
+                next_phase = animation_phase_generator(game_cube.turn_equator, game_model.turn_equator, is_clockwise)
             elif event.key == K_m:
                 print "\tTurning Middle"
-                next_phase = animation_phase_generator(game_cube.turn_middle,game_model.turn_middle, is_clockwise)
+                next_phase = animation_phase_generator(game_cube.turn_middle, game_model.turn_middle, is_clockwise)
         if event.type == QUIT:
             game_runner.running = False
     standard_draw(game_cube)
@@ -185,6 +186,9 @@ def cube_exploring(game_runner):
     game_cube = game_runner.cube
     game_cube.setMultiColors(range(26), [egg] * 6, False)
     for event in pygame.event.get():
+        if event.type == KEYDOWN and event.key == K_RETURN:
+            game_runner.should_reset = True
+            # I should probably do this part better...
         if event.type == QUIT:
             game_runner.running = False
     standard_draw(game_cube)

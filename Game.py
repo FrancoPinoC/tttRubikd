@@ -7,6 +7,7 @@ import Inits
 
 class GameRunner:
     def __init__(self):
+        self.should_reset = False
         self.current_player = 1
         self.running = True
         self.cube = Rukube(Settings.CUBE_SIDE)
@@ -15,20 +16,15 @@ class GameRunner:
         self.backgrounds = [Settings.PLAYER_ONE_BG, Settings.PLAYER_TWO_BG]
 
     def run_game(self):
-        print Settings.INSTRUCTIONS
-        Inits.init_pygame((Settings.GAME_WIDTH, Settings.GAME_HEIGHT), "Tic-Tac-Toe Rubik'd")
-        Inits.init_opengl((Settings.GAME_WIDTH, Settings.GAME_HEIGHT), Settings.ZOOMING_FACTOR)
-        glLoadIdentity()
-        # Look towards the center, from negative Z, with an UP in the Y axis.
-        gluLookAt(0.0, 0.0, -2000.0, 0.0, 0.0, 0.0, 0, 1, 0)
-        background = self.backgrounds[(self.current_player + 1) % 2]
-        glClearColor(background[0], background[1], background[2], background[3])
+        game.prepare_window()
         print Settings.NEW_TURN_MESSAGE
         while self.running:
             self.current_phase = self.current_phase(self)
             # Haha, this method is so short now, maybe I *should* actually just move Phases over here to this class.
             pygame.display.flip()
             pygame.time.wait(1000 / 100)
+            if game.should_reset:
+                self.reset_game()
         pygame.quit()
         sys.exit
 
@@ -38,6 +34,24 @@ class GameRunner:
         background = self.backgrounds[(self.current_player + 1) % 2]
         glClearColor(background[0], background[1], background[2], background[3])
 
+    def reset_game(self):
+        self.should_reset = False
+        self.current_player = 1
+        self.running = True
+        self.cube = Rukube(Settings.CUBE_SIDE)
+        # self.cube_model SOMEDAY MAYBE I'M GONNA DO IT THIS WAY (but prolly not)
+        self.current_phase = Phases.marking_phase
+        print "**********************\n\n\n"+Settings.NEW_TURN_MESSAGE
+
+    def prepare_window(self):
+        print Settings.INSTRUCTIONS
+        Inits.init_pygame((Settings.GAME_WIDTH, Settings.GAME_HEIGHT), "Tic-Tac-Toe Rubik'd")
+        Inits.init_opengl((Settings.GAME_WIDTH, Settings.GAME_HEIGHT), Settings.ZOOMING_FACTOR)
+        glLoadIdentity()
+        # Look towards the center, from negative Z, with an UP in the Y axis.
+        gluLookAt(0.0, 0.0, -2000.0, 0.0, 0.0, 0.0, 0, 1, 0)
+        background = self.backgrounds[(self.current_player + 1) % 2]
+        glClearColor(background[0], background[1], background[2], background[3])
 
 game = GameRunner()
 game.run_game()

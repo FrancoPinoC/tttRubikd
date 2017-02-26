@@ -38,7 +38,7 @@ WIN_MESSAGE = "\nWOOOOO, PLAYER {0} WON! \n Suck it, Player {1}"
 DOUBLE_WIN_MESSAGE = "\nYOU BOTH WON! ...? ... I mean, I don't know, is that good? D-Do you feel good about that?"
 OUT_OF_MOVES_MESSAGE = "\nSo the whole front face is full... um... NOBODY WON, WOO \\o/!"
 
-INSTRUCTIONS = "- Click and drag to rotate the whole cube around.\n" \
+INSTRUCTIONS = "- Click and drag to rotate the whole cube around during the marking phase.\n" \
                  "- Hover your mouse over the cell you want to mark,\n" \
                  "  then press the spacebar to do so. P1 is red, P2 is green.\n" \
                  "- How to rotate individual faces \n" \
@@ -49,7 +49,9 @@ INSTRUCTIONS = "- Click and drag to rotate the whole cube around.\n" \
                  "   u: Up\n" \
                  "   e: Equator (horizontal line)\n" \
                  "   m: Middle (vertical line)\n" \
-                 "  Clockwise rotations by default.\n" \
+                 "  All horizontal and all vertical sides rotate in the same direction.\n" \
+                 "  Clockwise according to the upper face for horizontal, and clockwise\n" \
+                 "  according to the left face for all vertical sides.\n" \
                  "  Right click while pressing the buttons to make it counterclockwise.\n" \
                  "(this is an unfinished demo).\n" \
                  "******************************\n"
