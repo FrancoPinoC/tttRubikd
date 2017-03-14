@@ -41,6 +41,8 @@ class GameRunner:
         self.cube = Rukube(Settings.CUBE_SIDE)
         # self.cube_model SOMEDAY MAYBE I'M GONNA DO IT THIS WAY (but prolly not)
         self.current_phase = Phases.marking_phase
+        background = self.backgrounds[(self.current_player + 1) % 2]
+        glClearColor(background[0], background[1], background[2], background[3])
         print "**********************\n\n\n"+Settings.NEW_TURN_MESSAGE
 
     def prepare_window(self):
