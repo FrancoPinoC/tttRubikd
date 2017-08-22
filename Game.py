@@ -15,9 +15,14 @@ class GameRunner:
         self.current_phase = Phases.marking_phase
         self.backgrounds = [Settings.PLAYER_ONE_BG, Settings.PLAYER_TWO_BG]
 
+    def new_turn_message(self):
+        # You would think this is "DRY" overkill, but I actually had a bug of not calling
+        # the format function in two of the three places where I use this message <.<
+        print Settings.NEW_TURN_MESSAGE.format(self.current_player)
+
     def run_game(self):
         game.prepare_window()
-        print Settings.NEW_TURN_MESSAGE
+        self.new_turn_message()
         while self.running:
             self.current_phase = self.current_phase(self)
             # Haha, this method is so short now, maybe I *should* actually just move Phases over here to this class.
@@ -30,7 +35,7 @@ class GameRunner:
 
     def change_player(self):
         self.current_player = self.current_player % 2 + 1
-        print Settings.NEW_TURN_MESSAGE.format(self.current_player)
+        self.new_turn_message()
         background = self.backgrounds[(self.current_player + 1) % 2]
         glClearColor(background[0], background[1], background[2], background[3])
 
@@ -43,7 +48,8 @@ class GameRunner:
         self.current_phase = Phases.marking_phase
         background = self.backgrounds[(self.current_player + 1) % 2]
         glClearColor(background[0], background[1], background[2], background[3])
-        print "**********************\n\n\n"+Settings.NEW_TURN_MESSAGE
+        print "**********************\n"
+        self.new_turn_message()
 
     def prepare_window(self):
         print Settings.INSTRUCTIONS
