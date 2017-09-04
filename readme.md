@@ -16,6 +16,7 @@ Usual Rubik’s Cube’s color scheme is ignored; this game is played with a com
 - If the front face is full at the start of a player’s turn, instead of declaring the game a draw, that player may skip the drawing phase.
 
 (name not final P= )
+
 Here's how it looks: 
 ![A gif of a game goes here... why you looking at the alt-text for?](demo_gif.gif)
 
