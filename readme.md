@@ -18,6 +18,7 @@ Usual Rubik’s Cube’s color scheme is ignored; this game is played with a com
 (name not final P= )
 
 Here's how it looks: 
+
 ![A gif of a game goes here... why you looking at the alt-text for?](demo_gif.gif)
 
 (same example as in the Rules and Example pdf... actually I guess I could delete that pdf)
