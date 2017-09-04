@@ -1,8 +1,8 @@
 # Zooming factor. The smaller it is, the bigger the modeled object looks.
 ZOOMING_FACTOR = 1.6
 
-GAME_WIDTH = 700
-GAME_HEIGHT = 700
+GAME_WIDTH = 500
+GAME_HEIGHT = 500
 
 # Rotation multiplier. When exploring the cube via left-click, this define how fast the cube moves in relation to the
 # mouse's movement. For the same distance traveled by the cursor: The bigger the multiplier, the faster the cube rotates
