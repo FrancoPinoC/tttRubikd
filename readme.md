@@ -12,7 +12,7 @@ Usual Rubik’s Cube’s color scheme is ignored; this game is played with a com
 - The game is over only after the final turn has been made. Getting to a winning Tic-Tac-Toe configuration will not win you the game at the “drawing phase”.
 
 ### Possible or alternative rules:
-- The cube can only be seen, at all times from the front face, so that all other faces are always hidden (none of that exploring the rest of the faces nonsense. Players gotta have great memory now). A less severe limitation could be allowing the cube to be seen only during the drawing phase (this is how it works right now, thou the players could just apply their own house-rules and decide they won't look).
+- The cube can only be seen at all times from the front face, so that all other faces are always hidden (none of that exploring the rest of the faces nonsense. Players gotta have great memory now). A less severe limitation could be allowing the cube to be seen only during the drawing phase (this is how it works right now, thou the players could just apply their own house-rules and decide they won't look).
 - If the front face is full at the start of a player’s turn, instead of declaring the game a draw, that player may skip the drawing phase.
 
 (name not final P= )
