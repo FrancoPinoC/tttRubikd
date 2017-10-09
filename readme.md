@@ -22,4 +22,3 @@ Here's how it looks:
 ![A gif of a game goes here... why you looking at the alt-text for?](demo_gif.gif)
 
 (same example as in the Rules and Example pdf... actually I guess I could delete that pdf)
-(Ah damn, what's that blue dirt at the end there, I swear that's just how the gif maker redered it and not something you'd see in the curren version of the game)
